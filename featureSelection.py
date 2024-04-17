@@ -45,14 +45,11 @@ def main():
                     ]
     xTrain, xTest = preprocessing.minmax_range(xTrain,xTest,prep_columns)
     
-    corrMatrix = xTrain.corr().drop(columns=['id.resp_p_1','id.resp_p_22','id.resp_p_53','id.resp_p_67'])
-    
+    xTrain, xTest = select_features(xTrain, xTest)   
     plt.figure()
-    sns.heatmap(corrMatrix, annot=True, cmap='coolwarm',annot_kws={"size": 3})
+    sns.heatmap(xTrain.corr(), annot=True, cmap='coolwarm',annot_kws={"size": 5})
     plt.title('Pearson Correlation Matrix')
-    plt.show()
-    
-    xTrain, xTest = select_features(xTrain, xTest)    
+    plt.show() 
     xTrain.to_csv("xTrain.csv", index=False)
     xTest.to_csv("xTest.csv", index=False)
 
