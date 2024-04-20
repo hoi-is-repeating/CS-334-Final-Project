@@ -24,3 +24,13 @@ def fill_na(df):
 def onehot(df, columns):
     return pd.get_dummies(data = df, columns=columns)
 
+def main():
+    df = pd.read_csv("data.csv")
+    df = fill_na(df)
+    df = remove_na(df)
+    print(df)
+    df = onehot(df, ['label'])
+    print(df)
+
+if __name__ == "__main__":
+    main()
