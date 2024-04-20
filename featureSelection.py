@@ -34,17 +34,8 @@ def selection():
     df = preprocessing.onehot(df,encode_columns)
     df = preprocessing.fill_na(df)
     xTrain, xTest, yTrain, yTest = split(df, y)
-    prep_columns = ["id.orig_p",
-                    "duration",
-                    "orig_bytes",
-                    "resp_bytes",
-                    
-                    "orig_pkts",
-                    "orig_ip_bytes",
-                    "resp_pkts",
-                    "resp_ip_bytes"
-                    ]
-    xTrain, xTest = preprocessing.minmax_range(xTrain,xTest,prep_columns)
+
+    xTrain, xTest = preprocessing.minmax_range(xTrain,xTest,df.columns)
     plt.figure()
     sns.heatmap(xTrain.corr(), annot=False, cmap='coolwarm',annot_kws={"size": 5})
     plt.title('Pearson Correlation Matrix')
