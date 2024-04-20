@@ -35,6 +35,19 @@ def main():
     print(df.dtypes)
     #do we need scaling? 
     df.drop(columns=['label_Malicious'], inplace=True)
+
+    prep_columns = ["id.orig_p",
+                    "duration",
+                    "orig_bytes",
+                    "resp_bytes",
+                    
+                    "orig_pkts",
+                    "orig_ip_bytes",
+                    "resp_pkts",
+                    "resp_ip_bytes"]
+    
+    df = minmax_range(df, prep_columns)
+
     y = df['label_Benign']
     x = df.drop(columns=['label_Benign'])
     xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.2)
