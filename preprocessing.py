@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import sklearn.preprocessing as sk
 
+
 #olivia kim
 
 def minmax_range(xTrain, xTest,columns):
@@ -22,6 +23,4 @@ def fill_na(df):
 
 def onehot(df, columns):
     return pd.get_dummies(data = df, columns=columns)
-
-    
 
