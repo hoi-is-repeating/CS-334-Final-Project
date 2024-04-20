@@ -51,10 +51,10 @@ def main():
     y = df['label_Benign']
     x = df.drop(columns=['label_Benign'])
     xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.2)
-    xTrain.to_csv('xTrain.csv', index=False)
-    xTest.to_csv('xTest.csv', index=False)
-    yTrain.to_csv('yTrain.csv', index=False)
-    yTest.to_csv('yTest.csv', index=False)
+    # xTrain.to_csv('xTrain.csv', index=False)
+    # xTest.to_csv('xTest.csv', index=False)
+    # yTrain.to_csv('yTrain.csv', index=False)
+    # yTest.to_csv('yTest.csv', index=False)
 
 
 if __name__ == "__main__":
