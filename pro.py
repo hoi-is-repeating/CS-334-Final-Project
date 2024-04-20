@@ -19,11 +19,11 @@ def nn(train_x, train_y):
 def metrics(y, test_y):
     accuracy = accuracy_score(y, test_y)
     f1 = f1_score(y, test_y, average='weighted')
-    auc = roc_auc_score(y, test_y)
+    roc_auc = roc_auc_score(y, test_y)
     fpr, tpr, _ = roc_curve(test_y, y)
     auprc = auc(fpr, tpr)
 
-    return accuracy, f1, auc, auprc
+    return accuracy, f1, roc_auc, auprc
     
 
 def main(): 
@@ -32,21 +32,21 @@ def main():
     xTest = pd.read_csv("xTest.csv")
     yTest = pd.read_csv("yTest.csv")
 
-    knn_model = knn(xTrain, yTrain)
-    # nn_model = nn(xTrain, yTrain)
-    # nb_model = nb(xTrain, yTrain)
+    knn_model = knn(xTrain, yTrain.squeeze())
+    nn_model = nn(xTrain, yTrain.squeeze())
+    nb_model = nb(xTrain, yTrain.squeeze())
 
-    # knn_y = knn_model.predict(xTest)
-    # nn_y = nn_model.predict(xTest)
-    # nb_y = nb_model.predict(xTest)
+    knn_y = knn_model.predict(xTest)
+    nn_y = nn_model.predict(xTest)
+    nb_y = nb_model.predict(xTest)
 
-    # knn_metrics = metrics(knn_y, yTest)
-    # nn_metrics = metrics(nn_y, yTest)
-    # nb_metrics = metrics(nb_y, yTest)
+    knn_metrics = metrics(knn_y, yTest)
+    nn_metrics = metrics(nn_y, yTest)
+    nb_metrics = metrics(nb_y, yTest)
 
-    # print("KNN: ", knn_metrics)
-    # print("NN: ", nn_metrics)
-    # print("NB: ", nb_metrics)
+    print("KNN: ", knn_metrics)
+    print("NN: ", nn_metrics)
+    print("NB: ", nb_metrics)
 
 if __name__ == "__main__":
     main()
