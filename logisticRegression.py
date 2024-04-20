@@ -1,25 +1,34 @@
 import argparse
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
 
-def gridSearch(clf, pgrid, xTrain, yTrain, xTest, yTest):
+def findParams(clf, pgrid, xTrain, yTrain):
     grid = GridSearchCV(clf,pgrid,cv=10)
     grid.fit(xTrain,yTrain)
+    classifier = grid.best_estimator_
+    classifier.fit(xTrain,yTrain)
+    bestParams = grid.best_params_
+    return bestParams
 #olivia kim
-def lasso():
-    lassoLrName = "LR (L1)"
-    lassoLrGrid = get_parameter_grid(lassoLrName)
+def lasso(xTrain, yTrain):
+    lassoLrGrid= {
+            'C': [0.01, 0.1, 1, 10],
+            'tol':[1e-4,1e-5,1e-6],
+            'fit_intercept':[True,False]
+        }
     lassoClf = LogisticRegression(penalty='l1',solver='saga',max_iter=1000)
-    perfDict, rocDF, bestParamDict = eval_searchcv(lassoLrName, lassoClf, lassoLrGrid,
-                                                   xTrain, yTrain, xTest, yTest,
-                                                   perfDict, rocDF, bestParamDict)
-def ridge():
-    print("Tuning Logistic Regression (Ridge) --------")
-    ridgeLrName = "LR (L2)"
-    ridgeLrGrid = get_parameter_grid(ridgeLrName)
-    # fill in
+    bestParams = findParams(lassoClf, lassoLrGrid,xTrain, yTrain)
+    model = GridSearchCV(lassoClf,bestParams,1000,cv=10)
+    return model
+def ridge(xTrain, yTrain):
+    ridgeLrGrid= {
+            'C': [0.01, 0.1, 1, 10],
+            'tol':[1e-4,1e-5,1e-6],
+            'fit_intercept':[True,False]
+        }
     ridgeClf = LogisticRegression(penalty='l2',solver='lbfgs',max_iter=1000)
-    perfDict, rocDF, bestParamDict = eval_searchcv(ridgeLrName, ridgeClf, ridgeLrGrid,
-                                                   xTrain, yTrain, xTest, yTest,
-                                                   perfDict, rocDF, bestParamDict)
+    bestParams = findParams(ridgeClf, ridgeLrGrid,xTrain, yTrain)
+    model = GridSearchCV(ridgeClf,bestParams,1000,cv=10)
+    return model
