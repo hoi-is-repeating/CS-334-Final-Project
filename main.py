@@ -1,4 +1,5 @@
 import featureSelection
+from pro import knn, nn, nb, metrics
 def main():
     xTrain,xTest,yTrain,yTest = featureSelection.selection()
     knn_model = knn(xTrain, yTrain.squeeze())
