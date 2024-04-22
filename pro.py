@@ -6,7 +6,7 @@ import pandas as pd
 from naiveBayes import nb
 
 def knn(train_x, train_y, neighbors=5):
-    knn = KNeighborsClassifier(n_neighbors=neighbors)
+    knn = KNeighborsClassifier(n_neighbors=10)
     knn.fit(train_x, train_y)
     
     return knn
