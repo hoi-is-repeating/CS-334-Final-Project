@@ -6,7 +6,6 @@ from sklearn.metrics import accuracy_score
 
 
 
-
 def rndmForest(xTrain, yTrain, xTest, yTest):
     param_grid = {
         'n_estimators': [50, 100, 200],
@@ -41,7 +40,7 @@ def rndmForest(xTrain, yTrain, xTest, yTest):
 
 
 
-def build_decision_tree(train_X, train_y, min_samples_leaf, max_depth):
+def dt(train_X, train_y, min_samples_leaf, max_depth):
     tree = DecisionTreeClassifier(min_samples_leaf=min_samples_leaf, max_depth=max_depth)
     tree.fit(train_X, train_y)
     return tree
