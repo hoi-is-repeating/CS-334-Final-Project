@@ -18,11 +18,7 @@ def get_parameter_grid(mName):
         'min_samples_leaf': [1, 3, 5],
         'criterion': ['gini', 'entropy']
         }
-    elif mName == "LR (None)":
-        pGrid = {
-            'tol':[1e-4,1e-5,1e-6],
-            'fit_intercept':[True,False]
-        }
+
     elif mName == "LR (L1)":
         pGrid = {
             'C': [0.01, 0.1, 1, 10],
