@@ -25,7 +25,7 @@ def fill_na(df):
 
 def onehot(df, columns):
     return pd.get_dummies(data = df, columns=columns)
-
+"""
 def main():
     df = pd.read_csv("data.csv")
     df = fill_na(df)
@@ -63,3 +63,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""
