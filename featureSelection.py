@@ -5,10 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-#olivia kim
-def split(xFeat,y):
-    xTrain, xTest, yTrain, yTest = train_test_split(xFeat,y, test_size=0.3)
-    return xTrain, xTest, yTrain, yTest
+
 
 
 def select_features(xTrain, xTest):
@@ -35,7 +32,7 @@ def selection():
     df = preprocessing.onehot(df,encode_columns)
     df = preprocessing.fill_na(df)
     df = preprocessing.minmax_range(df,df.columns)
-    xTrain, xTest, yTrain, yTest = split(df, y)
+    xTrain, xTest, yTrain, yTest = train_test_split(df,y, test_size=0.3)
 
     
     plt.figure()
