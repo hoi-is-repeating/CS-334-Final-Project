@@ -1,6 +1,6 @@
 import featureSelection
 from pro import knn, nn, nb, metrics
-from logisticRegression import findParams, lasso, ridge
+from logisticRegression import lasso, ridge
 from dt import dt
 from rf import randf
 import pandas as pd
@@ -77,6 +77,8 @@ def predict(clf, pgrid, xTrain, yTrain, xTest, yTest):
     
 def main():
     xTrain, xTest, yTrain, yTest = featureSelection.selection()
+    yTrain = yTrain.values.ravel()
+    yTest = yTest.values.ravel()
     
     metricsMap = {}
     roc = {}
