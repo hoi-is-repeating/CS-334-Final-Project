@@ -25,6 +25,7 @@ def selection():
     df = pd.read_csv("data.csv")
     y = df['label']
     y = preprocessing.onehot(y,'label')
+    y = y.drop(columns=['Malicious'])
     df = df.drop(columns=['index','id.orig_h',"id.resp_h","service","missed_bytes","history","label"])
     df = preprocessing.remove_na(df)
     encode_columns = ["id.resp_p",
@@ -35,7 +36,7 @@ def selection():
     df = preprocessing.fill_na(df)
     xTrain, xTest, yTrain, yTest = split(df, y)
 
-    xTrain, xTest = preprocessing.minmax_range(xTrain,xTest,df.columns)
+    xTrain = preprocessing.minmax_range(xTrain,df.columns)
     plt.figure()
     sns.heatmap(xTrain.corr(), annot=False, cmap='coolwarm',annot_kws={"size": 5})
     plt.title('Pearson Correlation Matrix')
