@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from naiveBayes import nb
 
-def knn(train_x, train_y, neighbors=5):
+def knn(train_x, train_y, neighbors=20):
     knn = KNeighborsClassifier(n_neighbors=neighbors)
     knn.fit(train_x, train_y)
     
@@ -47,9 +47,9 @@ def plot(clf, xTrain,xTest,yTrain,yTest):
     plt.show()
     
 def main(): 
-    xTrain = pd.read_csv("xTrain.csv")
+    xTrain = pd.read_csv("xTrain_dropped.csv")
     yTrain = pd.read_csv("yTrain.csv")
-    xTest = pd.read_csv("xTest.csv")
+    xTest = pd.read_csv("xTest_dropped.csv")
     yTest = pd.read_csv("yTest.csv")
 
     knn_model = knn(xTrain, yTrain.squeeze())
