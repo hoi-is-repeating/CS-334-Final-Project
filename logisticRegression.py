@@ -7,11 +7,11 @@ from sklearn.linear_model import LogisticRegression
 
 #olivia kim
 def lasso(xTrain, yTrain,pGrid):
-    lassoClf = LogisticRegression(penalty='l1',solver='saga',max_iter=1000)
+    lassoClf = LogisticRegression(penalty='l1',solver='saga',max_iter=3000)
     
     return lassoClf
 def ridge(xTrain, yTrain, pGrid):
 
-    ridgeClf = LogisticRegression(penalty='l2',solver='lbfgs',max_iter=1000)
+    ridgeClf = LogisticRegression(penalty='l2',solver='lbfgs',max_iter=3000)
     
     return ridge
