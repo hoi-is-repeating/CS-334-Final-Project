@@ -5,11 +5,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 
-def dt(train_X, train_y, min_samples_leaf, max_depth):
-    tree = DecisionTreeClassifier(min_samples_leaf=min_samples_leaf, max_depth=max_depth)
+def dt(train_X, train_y):
+    tree = DecisionTreeClassifier()
     tree.fit(train_X, train_y)
     return tree
-
+"""
 def main():
     # Argument parser
     parser = argparse.ArgumentParser(description="Decision Tree Classifier")
@@ -49,6 +49,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+"""
 
 
 

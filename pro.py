@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from naiveBayes import nb
 
-def knn(train_x, train_y, neighbors=5):
-    knn = KNeighborsClassifier(n_neighbors=10)
+def knn(train_x, train_y):
+    knn = KNeighborsClassifier()
     knn.fit(train_x, train_y)
     
     return knn
