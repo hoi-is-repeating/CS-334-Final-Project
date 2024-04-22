@@ -67,7 +67,6 @@ def main():
     print("KNN: ", knn_metrics)
     print("NN: ", nn_metrics)
     print("NB: ", nb_metrics)
-    plot()
 
 if __name__ == "__main__":
     main()
