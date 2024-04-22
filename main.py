@@ -21,14 +21,14 @@ def get_parameter_grid(mName):
 
     elif mName == "LR (L1)":
         pGrid = {
-            'C': [0.01, 0.1, 1, 10],
-            'tol':[1e-4,1e-5,1e-6],
+            'C': [0.01, 0.1, 1],
+            'tol':[1e-4,1e-5],
             'fit_intercept':[True,False]
         }
     elif mName == "LR (L2)":
         pGrid = {
-            'C': [0.01, 0.1, 1, 10],
-            'tol':[1e-4,1e-5,1e-6],
+            'C': [0.01, 0.1, 1],
+            'tol':[1e-4,1e-5],
             'fit_intercept':[True,False]
         }
     elif mName == "KNN":
