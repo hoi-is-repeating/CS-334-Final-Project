@@ -14,7 +14,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error, r2_score
 
-def rndmForest(xTrain, yTrain, xTest, yTest):
+def randf(xTrain, yTrain, xTest, yTest):
     param_grid = {
         'n_estimators': [50, 100, 200],
         'max_depth': [None, 10, 20],

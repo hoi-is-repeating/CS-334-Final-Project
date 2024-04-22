@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 
-def build_decision_tree(train_X, train_y, min_samples_leaf, max_depth):
+def dt(train_X, train_y, min_samples_leaf, max_depth):
     tree = DecisionTreeClassifier(min_samples_leaf=min_samples_leaf, max_depth=max_depth)
     tree.fit(train_X, train_y)
     return tree
