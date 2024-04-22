@@ -18,10 +18,17 @@ def select_features(xTrain, xTest):
     return xTrain, xTest
 
 def selection():
+<<<<<<< HEAD
     df = pd.read_csv("data.csv")
     y = df['label']
     y = preprocessing.onehot(y,'label')
     y = y.drop(columns=['Malicious'],inplace=True)
+=======
+    
+    df = pd.read_csv("data.csv")
+    y = df['label']
+    y = preprocessing.onehot(y,'label')
+>>>>>>> parent of 3e417bc (new csvs to prevent overfitting)
     df = df.drop(columns=['index','id.orig_h',"id.resp_h","service","missed_bytes","history","label"])
     df = preprocessing.remove_na(df)
     encode_columns = ["id.resp_p",
@@ -30,10 +37,16 @@ def selection():
                       ]   
     df = preprocessing.onehot(df,encode_columns)
     df = preprocessing.fill_na(df)
+<<<<<<< HEAD
     df = preprocessing.minmax_range(df,df.columns)
     xTrain, xTest, yTrain, yTest = train_test_split(df,y, test_size=0.3)
 
     
+=======
+    xTrain, xTest, yTrain, yTest = split(df, y)
+
+    xTrain, xTest = preprocessing.minmax_range(xTrain,xTest,df.columns)
+>>>>>>> parent of 3e417bc (new csvs to prevent overfitting)
     plt.figure()
     sns.heatmap(xTrain.corr(), annot=False, cmap='coolwarm',annot_kws={"size": 5})
     plt.title('Pearson Correlation Matrix')
@@ -46,5 +59,9 @@ def selection():
     xTest.to_csv("xTest.csv", index=False)
     yTrain.to_csv("yTrain.csv", index=False)
     yTest.to_csv("yTest.csv", index=False)
+<<<<<<< HEAD
     
     return xTrain,xTest,yTrain,yTest
+=======
+    return xTrain,xTest,yTrain,yTest
+>>>>>>> parent of 3e417bc (new csvs to prevent overfitting)
