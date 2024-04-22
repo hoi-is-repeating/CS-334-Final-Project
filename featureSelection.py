@@ -18,7 +18,6 @@ def select_features(xTrain, xTest):
     return xTrain, xTest
 
 def selection():
-    
     df = pd.read_csv("data.csv")
     y = df['label']
     y = preprocessing.onehot(y,'label')
