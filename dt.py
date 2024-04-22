@@ -34,7 +34,7 @@ def main():
     train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Build decision tree
-    tree = build_decision_tree(train_X, train_y, args.min_samples_leaf, args.max_depth)
+    tree = dt(train_X, train_y, args.min_samples_leaf, args.max_depth)
 
     # Predictions
     train_predictions = tree.predict(train_X)
