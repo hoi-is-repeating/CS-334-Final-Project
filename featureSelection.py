@@ -20,32 +20,47 @@ def select_features(xTrain, xTest):
     xTest = xTest.drop(xTest[to_drop], axis=1)
     return xTrain, xTest
 
-def selection():
+def main():
     
-    df = pd.read_csv("data.csv")
-    y = df['label']
-    y = preprocessing.onehot(y,'label')
-    df = df.drop(columns=['index','id.orig_h',"id.resp_h","service","missed_bytes","history","label"])
-    df = preprocessing.remove_na(df)
-    encode_columns = ["id.resp_p",
-                      "proto",
-                      "conn_state"
-                      ]   
-    df = preprocessing.onehot(df,encode_columns)
-    df = preprocessing.fill_na(df)
-    xTrain, xTest, yTrain, yTest = split(df, y)
+    # df = pd.read_csv("data.csv")
+    # y = df['label']
+    # y = preprocessing.onehot(y,'label')
+    # df = df.drop(columns=['index','id.orig_h',"id.resp_h","service","missed_bytes","history","label"])
+    # df = preprocessing.remove_na(df)
+    # encode_columns = ["id.resp_p",
+    #                   "proto",
+    #                   "conn_state"
+    #                   ]   
+    # df = preprocessing.onehot(df,encode_columns)
+    # df = preprocessing.fill_na(df)
+    # xTrain, xTest, yTrain, yTest = split(df, y)
+    # prep_columns = ["id.orig_p",
+    #                 "duration",
+    #                 "orig_bytes",
+    #                 "resp_bytes",
+                    
+    #                 "orig_pkts",
+    #                 "orig_ip_bytes",
+    #                 "resp_pkts",
+    #                 "resp_ip_bytes"
+    #                 ]
+    # xTrain, xTest = preprocessing.minmax_range(xTrain,xTest,prep_columns)
+    # plt.figure()
+    # sns.heatmap(xTrain.corr(), annot=False, cmap='coolwarm',annot_kws={"size": 5})
+    # plt.title('Pearson Correlation Matrix')
+    # plt.show()
+    xTrain = pd.read_csv("xTrain.csv")
+    yTrain = pd.read_csv("yTrain.csv")
+    xTest = pd.read_csv("xTest.csv")
+    yTest = pd.read_csv("yTest.csv")
 
-    xTrain, xTest = preprocessing.minmax_range(xTrain,xTest,df.columns)
-    plt.figure()
-    sns.heatmap(xTrain.corr(), annot=False, cmap='coolwarm',annot_kws={"size": 5})
-    plt.title('Pearson Correlation Matrix')
-    plt.show()
     xTrain, xTest = select_features(xTrain, xTest)   
     sns.heatmap(xTrain.corr(), annot=True, cmap='coolwarm',annot_kws={"size": 5})
     plt.title('Pearson Correlation Matrix')
     plt.show() 
-    xTrain.to_csv("xTrain.csv", index=False)
-    xTest.to_csv("xTest.csv", index=False)
-    yTrain.to_csv("yTrain.csv", index=False)
-    yTest.to_csv("yTest.csv", index=False)
-    return xTrain,xTest,yTrain,yTest
+    xTrain.to_csv("xTrain_dropped.csv", index=False)
+    xTest.to_csv("xTest_dropped.csv", index=False)
+    
+
+if __name__ == "__main__":
+    main()
