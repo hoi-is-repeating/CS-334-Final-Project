@@ -10,8 +10,9 @@ def lasso(xTrain, yTrain,pGrid):
     lassoClf = LogisticRegression(penalty='l1',solver='saga',max_iter=10000)
     
     return lassoClf
+
 def ridge(xTrain, yTrain, pGrid):
 
     ridgeClf = LogisticRegression(penalty='l2',solver='lbfgs',max_iter=10000)
     
-    return ridge
+    return ridgeClf

@@ -86,41 +86,59 @@ def main():
     lassoLrGrid = get_parameter_grid(lassoLrName)
     lassoClf = lasso(xTrain,yTrain,lassoLrGrid)
     lassoBestClf, lassoBestParams = findParams(lassoClf,lassoLrGrid,xTrain,yTrain)
-    metricsMap,roc,bestParams=predict(lassoBestClf,lassoBestParams,xTrain,yTrain,xTest,yTest)
+    metricsMap_lasso,roc_lasso,bestParams_lasso=predict(lassoBestClf,lassoBestParams,xTrain,yTrain,xTest,yTest)
+
+    metricsMap[lassoLrName] = metricsMap_lasso
+    roc[lassoLrName] = roc_lasso
+    bestParams[lassoLrName] = lassoBestParams
 
     # Logistic regression (L2)
-    print("Tuning Logistic Regression (Lasso) --------")
+    print("Tuning Logistic Regression (Ridge) --------")
     ridgeLrName = "LR (L2)"
     ridgeLrGrid = get_parameter_grid(ridgeLrName)
     ridgeClf = ridge(xTrain,yTrain,ridgeLrGrid)
     ridgeBestClf, ridgeBestParams = findParams(ridgeClf,ridgeLrGrid,xTrain,yTrain)
-    metricsMap,roc,bestParams=predict(ridgeBestClf,ridgeBestParams,xTrain,yTrain,xTest,yTest)
+    metricsMap_ridge,roc_ridge,bestParams_ridge=predict(ridgeBestClf,ridgeBestParams,xTrain,yTrain,xTest,yTest)
     
+    metricsMap[ridgeLrName] = metricsMap_ridge
+    roc[ridgeLrName] = roc_ridge
+    bestParams[ridgeLrName] = ridgeBestParams
+
     # k-nearest neighbors
     print("Tuning KNN --------")
     knnName = "KNN"
     knnGrid = get_parameter_grid(knnName)
     knnClf = knn(xTrain,yTrain)
     knnBestClf, knnBestParams = findParams(knnClf,knnGrid,xTrain,yTrain)
-    metricsMap,roc,bestParams=predict(knnBestClf,knnBestParams,xTrain,yTrain,xTest,yTest)
+    metricsMap_knn,roc_knn,bestParams_knn=predict(knnBestClf,knnBestParams,xTrain,yTrain,xTest,yTest)
     
+    metricsMap[knnName] = metricsMap_knn
+    roc[knnName] = roc_knn
+    bestParams[knnName] = knnBestParams
+
     # neural networks
     print("Tuning NN --------")
     nnName = "NN"
     nnGrid = get_parameter_grid(nnName)
     nnClf = nn(xTrain,yTrain)
     nnBestClf, nnBestParams = findParams(nnClf,nnGrid,xTrain,yTrain)
-    metricsMap,roc,bestParams=predict(nnBestClf,nnBestParams,xTrain,yTrain,xTest,yTest)
+    metricsMap_nn,roc_nn,bestParams_nn=predict(nnBestClf,nnBestParams,xTrain,yTrain,xTest,yTest)
     
-    
-    
+    metricsMap[nnName] = metricsMap_nn
+    roc[nnName] = roc_nn
+    bestParams[nnName] = nnBestParams
+
+    roc_df = pd.DataFrame({
+        'FPR': roc['fpr'],
+        'TPR': roc['tpr']
+    })
     
     metricsMap = pd.DataFrame.from_dict(metricsMap, orient='index')
     bestParams = pd.DataFrame.from_dict(bestParams, orient='index')
     print(metricsMap)
     print(bestParams)
     # save roc curves to data
-    roc.to_csv("rocOutput.csv", index=False)
+    roc_df.to_csv("rocOutput.csv", index=False)
 
 
 if __name__ == "__main__":
