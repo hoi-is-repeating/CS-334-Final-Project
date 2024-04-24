@@ -70,11 +70,12 @@ def predict(clfName,clf,pGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest
     rocDF["fpr"], rocDF["tpr"], _ = roc_curve(yTest,yHat_prob)
     precision, recall, _ = precision_recall_curve(yTest, yHat_prob)
     metrics["AUPRC"] = auc(recall, precision)
-    metrics["F1"] = f1_score(yTest,clf.predict(xTest))
+    metrics["F1"] = f1_score(yTest,bestClf.predict(xTest))
     
     metricsMap[clfName] = metrics
     
     rocRes = pd.DataFrame(rocDF)
+    roc = pd.DataFrame(roc)
     rocRes["model"] = clfName
     roc = pd.concat([roc, rocRes], ignore_index=True)
     
@@ -138,9 +139,9 @@ def main():
     metricsMap,roc,bestParamsMap=predict(ridgeLrName,ridgeClf,ridgeLrGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest)
 
     
-    metricsMap = pd.DataFrame.from_dict(metricsMap, orient='index')
-    roc = pd.DataFrame.from_dict(roc, orient='index')
-    bestParamsMap = pd.DataFrame.from_dict(bestParamsMap, orient='index')
+    metricsMap = pd.DataFrame(metricsMap)
+    roc = pd.DataFrame(roc)
+    bestParamsMap = pd.DataFrame(bestParamsMap)
     print(metricsMap)
     print(bestParamsMap)
     # save roc curves to data
