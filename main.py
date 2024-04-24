@@ -105,14 +105,11 @@ def main():
     # naive bayes
     print("Tuning NB --------")
     nbName = "NB"
-    nbGrid = get_parameter_grid(nbName)
     nbClf = nb(xTrain,yTrain)
-    nbBestClf, nbBestParams = findParams(nbClf,nbGrid,xTrain,yTrain)
-    metricsMap_nb,roc_nb=predict(nbBestClf,xTest,yTest)
+    metricsMap_nb,roc_nb=predict(nbClf,xTest,yTest)
     
     metricsMap[nbName] = metricsMap_nb
     roc[nbName] = roc_nb
-    bestParams[nbName] = nbBestParams
     
     # decision tree
     print("Tuning DT --------")
