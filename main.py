@@ -44,6 +44,10 @@ def get_parameter_grid(mName):
             'activation': ['relu', 'tanh'],
             'alpha':[0.01, 0.1],
         }
+    elif mName == "NB":
+        pGrid = {
+            'var_smoothing': [1e-9]
+        }
     else:
         raise ValueError("Try models between DT, KNN, LR (None)...etc")
     return pGrid
@@ -56,17 +60,28 @@ def findParams(clf, pGrid, xTrain, yTrain):
     bestParams = grid.best_params_
     return classifier,bestParams
 
-def predict(clf, xTest, yTest):
-    metricsMap = {}
-    roc = {}
+def predict(clfName,clf,pGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest):
+    metrics = {}
+    rocDF = {} 
+    bestClf, bestParams = findParams(clf,pGrid,xTrain,yTrain)
     
-    yHat_prob = clf.predict_proba(xTest)[:,1]
-    metricsMap["AUC"] = roc_auc_score(yTest,yHat_prob)
-    roc["fpr"], roc["tpr"], _ = roc_curve(yTest,yHat_prob)
+    yHat_prob = bestClf.predict_proba(xTest)[:,1]
+    metrics["AUC"] = roc_auc_score(yTest,yHat_prob)
+    rocDF["fpr"], rocDF["tpr"], _ = roc_curve(yTest,yHat_prob)
     precision, recall, _ = precision_recall_curve(yTest, yHat_prob)
-    metricsMap["AUPRC"] = auc(recall, precision)
-    metricsMap["F1"] = f1_score(yTest,clf.predict(xTest))
-    return metricsMap,roc
+    metrics["AUPRC"] = auc(recall, precision)
+    metrics["F1"] = f1_score(yTest,clf.predict(xTest))
+    
+    metricsMap[clfName] = metrics
+    
+    rocRes = pd.DataFrame(rocDF)
+    rocRes["model"] = clfName
+    roc = pd.concat([roc, rocRes], ignore_index=True)
+    
+    bestParamsMap[clfName] = bestParams
+    
+    
+    return metricsMap,roc,bestParamsMap
     
     
 def main():
@@ -76,92 +91,62 @@ def main():
     
     metricsMap = {}
     roc = {}
-    bestParams = {}
+    bestParamsMap = {}
 
     # k-nearest neighbors
     print("Tuning KNN --------")
     knnName = "KNN"
-    knnGrid = get_parameter_grid(knnName)
     knnClf = knn(xTrain,yTrain)
-    knnBestClf, knnBestParams = findParams(knnClf,knnGrid,xTrain,yTrain)
-    metricsMap_knn,roc_knn=predict(knnBestClf,xTest,yTest)
-    
-    metricsMap[knnName] = metricsMap_knn
-    roc[knnName] = roc_knn
-    bestParams[knnName] = knnBestParams
+    knnGrid = get_parameter_grid(knnName)
+    metricsMap,roc,bestParamsMap=predict(knnName,knnClf,knnGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest)
+ 
 
     # neural networks
     print("Tuning NN --------")
     nnName = "NN"
-    nnGrid = get_parameter_grid(nnName)
     nnClf = nn(xTrain,yTrain)
-    nnBestClf, nnBestParams = findParams(nnClf,nnGrid,xTrain,yTrain)
-    metricsMap_nn,roc_nn=predict(nnBestClf,xTest,yTest)
-    
-    metricsMap[nnName] = metricsMap_nn
-    roc[nnName] = roc_nn
-    bestParams[nnName] = nnBestParams
+    nnGrid = get_parameter_grid(nnName)
+    metricsMap,roc,bestParamsMap=predict(nnName,nnClf,nnGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest)
     
     # naive bayes
     print("Tuning NB --------")
     nbName = "NB"
     nbClf = nb(xTrain,yTrain)
-    metricsMap_nb,roc_nb=predict(nbClf,xTest,yTest)
-    
-    metricsMap[nbName] = metricsMap_nb
-    roc[nbName] = roc_nb
-    
+    nbGrid = get_parameter_grid(nbName)
+    metricsMap,roc,bestParamsMap=predict(nbName,nbClf,nbGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest)
     # decision tree
     print("Tuning DT --------")
     dtName = "DT"
-    dtGrid = get_parameter_grid(dtName)
     dtClf = dt(xTrain,yTrain)
-    dtBestClf, dtBestParams = findParams(dtClf,dtGrid,xTrain,yTrain)
-    metricsMap_dt,roc_dt=predict(dtBestClf,xTest,yTest)
-    
-    metricsMap[dtName] = metricsMap_dt
-    roc[dtName] = roc_dt
-    bestParams[dtName] = dtBestParams
-    
+    dtGrid = get_parameter_grid(dtName)
+    metricsMap,roc,bestParamsMap=predict(dtName,dtClf,dtGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest)
+
     # logistic regression (L1)
     print("Tuning Logistic Regression (Lasso) --------")
     lassoLrName = "LR (L1)"
-    lassoLrGrid = get_parameter_grid(lassoLrName)
     lassoClf = lasso()
-    lassoBestClf, lassoBestParams = findParams(lassoClf,lassoLrGrid,xTrain,yTrain)
-    metricsMap_lasso,roc_lasso=predict(lassoBestClf,xTest,yTest)
+    lassoLrGrid = get_parameter_grid(lassoLrName)
+    metricsMap,roc,bestParamsMap=predict(lassoLrName,lassoClf,lassoLrGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest)
 
-    metricsMap[lassoLrName] = metricsMap_lasso
-    roc[lassoLrName] = roc_lasso
-    bestParams[lassoLrName] = lassoBestParams
 
     # Logistic regression (L2)
     print("Tuning Logistic Regression (Ridge) --------")
     ridgeLrName = "LR (L2)"
-    ridgeLrGrid = get_parameter_grid(ridgeLrName)
     ridgeClf = ridge()
-    ridgeBestClf, ridgeBestParams = findParams(ridgeClf,ridgeLrGrid,xTrain,yTrain)
-    metricsMap_ridge,roc_ridge=predict(ridgeBestClf,xTest,yTest)
+    ridgeLrGrid = get_parameter_grid(ridgeLrName)
     
-    metricsMap[ridgeLrName] = metricsMap_ridge
-    roc[ridgeLrName] = roc_ridge
-    bestParams[ridgeLrName] = ridgeBestParams
+    metricsMap,roc,bestParamsMap=predict(ridgeLrName,ridgeClf,ridgeLrGrid,metricsMap,roc,bestParamsMap, xTrain,yTrain, xTest, yTest)
 
-    
-
-    roc_df = pd.DataFrame({
-        'FPR': roc['fpr'],
-        'TPR': roc['tpr']
-    })
     
     metricsMap = pd.DataFrame.from_dict(metricsMap, orient='index')
-    bestParams = pd.DataFrame.from_dict(bestParams, orient='index')
+    roc = pd.DataFrame.from_dict(roc, orient='index')
+    bestParamsMap = pd.DataFrame.from_dict(bestParamsMap, orient='index')
     print(metricsMap)
-    print(bestParams)
+    print(bestParamsMap)
     # save roc curves to data
     metricsMap.to_csv("metrics.csv", index=False)
-    roc_df.to_csv("rocOutput.csv", index=False)
-    bestParams.to_csv("bestParams.csv", index=False)
+    roc.to_csv("rocOutput.csv", index=False)
+    bestParamsMap.to_csv("bestParams.csv", index=False)
 
 
 if __name__ == "__main__":

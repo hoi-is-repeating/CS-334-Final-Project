@@ -1,0 +1,6 @@
+metric,n_neighbors,weights,activation,alpha,hidden_layer_sizes,criterion,max_depth,min_samples_leaf,min_samples_split,C,fit_intercept,tol
+euclidean,3.0,distance,,,,,,,,,,
+,,,relu,0.01,"(50,)",,,,,,,
+,,,,,,gini,10.0,1.0,2.0,,,
+,,,,,,,,,,1.0,True,0.0001
+,,,,,,,,,,1.0,True,0.0001
