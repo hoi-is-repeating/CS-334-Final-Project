@@ -7,7 +7,6 @@ from sklearn.metrics import accuracy_score
 
 def dt(train_X, train_y):
     tree = DecisionTreeClassifier()
-    tree.fit(train_X, train_y)
     return tree
 """
 def main():

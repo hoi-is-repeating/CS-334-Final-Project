@@ -6,13 +6,12 @@ from sklearn.linear_model import LogisticRegression
 
 
 #olivia kim
-def lasso(xTrain, yTrain,pGrid):
-    lassoClf = LogisticRegression(penalty='l1',solver='saga',max_iter=10000)
+def lasso():
+    lasso = LogisticRegression(penalty='l1',solver='saga',max_iter=1000)
     
-    return lassoClf
+    return lasso
 
-def ridge(xTrain, yTrain, pGrid):
-
-    ridgeClf = LogisticRegression(penalty='l2',solver='lbfgs',max_iter=10000)
+def ridge():
+    ridge = LogisticRegression(penalty='l2',solver='lbfgs',max_iter=1000)
     
-    return ridgeClf
+    return ridge
